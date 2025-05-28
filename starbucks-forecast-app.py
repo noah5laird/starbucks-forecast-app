@@ -77,19 +77,19 @@ st.pyplot(fig)
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-def generate_summary(actuals, forecast):
-    summary_text = f"Revenue grew from ${actuals.iloc[-1]:,.0f} to an estimated ${forecast.iloc[-1]:,.0f} under current assumptions. "
-    prompt = f"Write a 75-word summary for an audit committee about this trend: {summary_text}"
+#def generate_summary(actuals, forecast):
+   # summary_text = f"Revenue grew from ${actuals.iloc[-1]:,.0f} to an estimated ${forecast.iloc[-1]:,.0f} under current assumptions. "
+   # prompt = f"Write a 75-word summary for an audit committee about this trend: {summary_text}"
 
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=100,
-        temperature=0.5
-    )
-    return response.choices[0].message.content
+   # response = client.chat.completions.create(
+    #    model="gpt-3.5-turbo",
+   #     messages=[{"role": "user", "content": prompt}],
+   #     max_tokens=100,
+  #      temperature=0.5
+  #  )
+  #  return response.choices[0].message.content
 
 
-ai_summary = generate_summary(actuals, forecasted)
-st.subheader("AI-Generated Summary")
-st.write(ai_summary)
+#ai_summary = generate_summary(actuals, forecasted)
+#st.subheader("AI-Generated Summary")
+#st.write(ai_summary)
