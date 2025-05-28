@@ -60,22 +60,19 @@ ax.legend()
 st.pyplot(fig)
 
 # --- AI Summary (with fail-safe) ---
-st.subheader("AI-Generated Summary")
+# --- Static AI Summary ---
+st.subheader("AI-Generated Summary (Simulated)")
 
-def generate_summary(actuals, forecast):
-    try:
-        summary_text = f"Revenue grew from ${actuals.iloc[-1]:,.0f} to an estimated ${forecast.iloc[-1]:,.0f} under current assumptions."
-        prompt = f"Write a 75-word summary for an audit committee about this trend: {summary_text}"
+summary_text = (
+    "Based on the current forecast, Starbucks’ quarterly revenue is projected to grow steadily from its most recent "
+    f"level of ${actuals.iloc[-1]:,.0f} to approximately ${forecasted.iloc[-1]:,.0f} in future quarters. This trend aligns "
+    "with moderate CPI growth and controlled expense levels, suggesting sustainable business performance. The analysis "
+    "indicates low risk of revenue overstatement under current macroeconomic conditions. Auditors should continue to monitor "
+    "these assumptions as economic conditions evolve."
+)
 
-        response = openai.ChatCompletion.create(
-            model="gpt-4o",
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=100,
-            temperature=0.5
-        )
-        return response['choices'][0]['message']['content']
-    except Exception as e:
-        return "⚠️ AI summary could not be generated. Please check your API key, quota, or try again later."
+st.write(summary_text)
+
 
 ai_summary = generate_summary(actuals, forecasted)
 st.write(ai_summary)
