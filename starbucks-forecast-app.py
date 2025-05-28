@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from fredapi import Fred
 import openai
+from openai import OpenAI
 
 # Configuration
 FRED_API_KEY = '18b5149ec21c04e0b38290b1de865d0b'
@@ -72,16 +73,22 @@ st.pyplot(fig)
 
 
 # --- AI Summary ---
+
+
+client = OpenAI(api_key=OPENAI_API_KEY)
+
 def generate_summary(actuals, forecast):
     summary_text = f"Revenue grew from ${actuals.iloc[-1]:,.0f} to an estimated ${forecast.iloc[-1]:,.0f} under current assumptions. "
     prompt = f"Write a 75-word summary for an audit committee about this trend: {summary_text}"
-    response = openai.ChatCompletion.create(
+
+    response = client.chat.completions.create(
         model="gpt-4",
         messages=[{"role": "user", "content": prompt}],
-        temperature=0.5,
-        max_tokens=100
+        max_tokens=100,
+        temperature=0.5
     )
-    return response['choices'][0]['message']['content']
+    return response.choices[0].message.content
+
 
 ai_summary = generate_summary(actuals, forecasted)
 st.subheader("AI-Generated Summary")
