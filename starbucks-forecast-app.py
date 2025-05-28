@@ -57,7 +57,7 @@ st.subheader("AI-Generated Summary (Simulated)")
 
 summary_text = (
     "Based on the current forecast, Starbucks’ quarterly revenue is projected to grow steadily from its most recent "
-    f"level of ${actuals.iloc[-1]:,.0f}  to approximately  ${forecasted.iloc[-1]:,.0f} in future quarters. This trend aligns "
+    f"level of ${actuals.iloc[-1]:,.1f}  to approximately  ${forecasted.iloc[-1]:,.1f} in future quarters. This trend aligns "
     "with moderate CPI growth and controlled expense levels, suggesting sustainable business performance. The analysis "
     "indicates low risk of revenue overstatement under current macroeconomic conditions. Auditors should continue to monitor "
     "these assumptions as economic conditions evolve."
