@@ -61,9 +61,9 @@ forecasted_val = forecasted.iloc[-1]
 summary_text = (
     f"Based on the current forecast, Starbucks’ quarterly revenue is projected to grow steadily from its most recent "
     f"level of ${latest:,.0f} to approximately ${forecasted_val:,.0f} in future quarters. This trend aligns with moderate "
-    "CPI growth and controlled expense levels, suggesting sustainable business performance. The analysis indicates low risk "
-    "of revenue overstatement under current macroeconomic conditions. Auditors should continue to monitor these assumptions "
-    "as economic conditions evolve."
+    f"CPI growth and controlled expense levels, suggesting sustainable business performance. The analysis indicates low risk "
+    f"of revenue overstatement under current macroeconomic conditions. Auditors should continue to monitor these assumptions "
+    f"as economic conditions evolve."
 )
 
 st.write(summary_text)
