@@ -61,12 +61,19 @@ actuals, forecasted = run_forecast(data, user_cpi, user_store_count)
 # --- Plot ---
 st.subheader("Revenue Forecast vs. Historical Data")
 fig, ax = plt.subplots()
+
+# Create future dates for the forecast based on the last actual date
+last_date = actuals.index[-1]
+forecast_index = pd.date_range(start=last_date + pd.offsets.QuarterEnd(1), periods=4, freq="Q")
+
+# Plot actuals and forecast
 ax.plot(actuals.index, actuals.values, label="Actual Revenue")
-ax.plot(range(actuals.index[-1]+1, actuals.index[-1]+5), forecasted, label="Forecasted Revenue", linestyle="--")
-ax.set_xlabel("Year")
+ax.plot(forecast_index, forecasted, label="Forecasted Revenue", linestyle="--")
+ax.set_xlabel("Quarter")
 ax.set_ylabel("Revenue (in millions)")
 ax.legend()
 st.pyplot(fig)
+
 
 # --- AI Summary ---
 def generate_summary(actuals, forecast):
