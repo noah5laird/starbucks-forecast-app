@@ -9,7 +9,7 @@ from openai import OpenAI
 
 # Configuration
 FRED_API_KEY = '18b5149ec21c04e0b38290b1de865d0b'
-OPENAI_API_KEY = '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'
+OPENAI_API_KEY = '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'
 fred = Fred(api_key=FRED_API_KEY)
 api_key = OPENAI_API_KEY
 
