@@ -80,13 +80,13 @@ def generate_summary(actuals, forecast):
     summary_text = f"Revenue grew from ${actuals.iloc[-1]:,.0f} to an estimated ${forecast.iloc[-1]:,.0f} under current assumptions. "
     prompt = f"Write a 75-word summary for an audit committee about this trend: {summary_text}"
 
-    response = client.chat.completions.create(
+    response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=100,
         temperature=0.5
     )
-    return response.choices[0].message.content
+    return response.choices[0].message["content"]
 
 
 ai_summary = generate_summary(actuals, forecasted)
