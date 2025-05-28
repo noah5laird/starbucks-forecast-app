@@ -75,7 +75,7 @@ st.pyplot(fig)
 # --- AI Summary ---
 
 
-client = OpenAI(api_key)
+client = OpenAI(api_key="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")
 
 def generate_summary(actuals, forecast):
     summary_text = f"Revenue grew from ${actuals.iloc[-1]:,.0f} to an estimated ${forecast.iloc[-1]:,.0f} under current assumptions. "
