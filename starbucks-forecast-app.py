@@ -82,7 +82,7 @@ def generate_summary(actuals, forecast):
     prompt = f"Write a 75-word summary for an audit committee about this trend: {summary_text}"
 
     response = client.chat.completions.create(
-        model="gpt-4",
+        model="gpt-4o",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=100,
         temperature=0.5
