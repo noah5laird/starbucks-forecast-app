@@ -8,16 +8,16 @@ import openai
 
 # Configuration
 FRED_API_KEY = '18b5149ec21c04e0b38290b1de865d0b'
-#OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY'
+OPENAI_API_KEY = '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'
 fred = Fred(api_key=FRED_API_KEY)
-#openai.api_key = OPENAI_API_KEY
+openai.api_key = OPENAI_API_KEY
 
 st.title("Starbucks Revenue Forecasting App")
 
 # --- Load your data (replace this with actual data path) ---
 @st.cache_data
 def load_data():
-    return pd.read_csv("starbucks_financials_expanded.csv")  # must match Jupyter output
+    return pd.read_csv("merged_with_cpi.csv")  # must match Jupyter output
 
 data = load_data()
 
