@@ -7,17 +7,17 @@ from fredapi import Fred
 import openai
 
 # Configuration
-FRED_API_KEY = 'YOUR_FRED_API_KEY'
-OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY'
+FRED_API_KEY = '18b5149ec21c04e0b38290b1de865d0b'
+#OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY'
 fred = Fred(api_key=FRED_API_KEY)
-openai.api_key = OPENAI_API_KEY
+#openai.api_key = OPENAI_API_KEY
 
 st.title("Starbucks Revenue Forecasting App")
 
 # --- Load your data (replace this with actual data path) ---
 @st.cache_data
 def load_data():
-    return pd.read_csv("your_clean_starbucks_data.csv")  # must match Jupyter output
+    return pd.read_csv("starbucks_financials_expanded.csv")  # must match Jupyter output
 
 data = load_data()
 
