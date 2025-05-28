@@ -11,7 +11,6 @@ from openai import OpenAI
 FRED_API_KEY = '18b5149ec21c04e0b38290b1de865d0b'
 OPENAI_API_KEY = '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'
 fred = Fred(api_key=FRED_API_KEY)
-api_key = OPENAI_API_KEY
 
 st.title("Starbucks Revenue Forecasting App")
 
@@ -75,8 +74,8 @@ st.pyplot(fig)
 # --- AI Summary ---
 
 
-client = OpenAI(api_key="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")
 
+openai.api_key = OPENAI_API_KEY
 def generate_summary(actuals, forecast):
     summary_text = f"Revenue grew from ${actuals.iloc[-1]:,.0f} to an estimated ${forecast.iloc[-1]:,.0f} under current assumptions. "
     prompt = f"Write a 75-word summary for an audit committee about this trend: {summary_text}"
