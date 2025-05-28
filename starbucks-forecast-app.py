@@ -24,39 +24,35 @@ data = load_data()
 # --- User Input Section ---
 st.sidebar.header("User Input")
 user_cpi = st.sidebar.slider("Expected CPI Growth (%)", 1.0, 5.0, 3.0)
-user_store_count = st.sidebar.number_input("Projected Store Count", value=34000)
+user_expenses = st.sidebar.number_input("Projected Quarterly Expenses (in millions)", value=5000.0)
 
 # --- Create Exogenous Variable Dataframe ---
 def prepare_exog(df):
     return df[["CPI", "StoreCount"]]  # or new variable
 
 # --- Fit ARIMAX Model ---
-def run_forecast(data, future_cpi, future_store_count):
+def run_forecast(data, future_cpi, future_expenses):
     df = data.copy()
-    
-    # Ensure the date column starts at 2018-03-31 and follows a quarterly frequency
     df["date"] = pd.date_range(start="2018-03-31", periods=len(df), freq="Q")
     df = df.set_index("date")
-    
-    # Use correct column names (lowercase, based on your dataset)
-    exog = df[["CPI", "store_count"]]
+
+    exog = df[["CPI", "expenses"]]  # Replace store_count with expenses
     model = SARIMAX(df["revenue"], exog=exog, order=(1, 1, 1)).fit(disp=False)
 
-    # Build future exogenous inputs
     future_exog = pd.DataFrame({
         "CPI": [future_cpi] * 4,
-        "store_count": [future_store_count] * 4
+        "expenses": [future_expenses] * 4
     })
 
-    # Forecast the next 4 quarters
     forecast = model.get_forecast(steps=4, exog=future_exog)
     forecast_values = forecast.predicted_mean
-    
     return df["revenue"], forecast_values
 
 
+
 # --- Run the Forecast ---
-actuals, forecasted = run_forecast(data, user_cpi, user_store_count)
+actuals, forecasted = run_forecast(data, user_cpi, user_expenses)
+
 
 # --- Plot ---
 st.subheader("Revenue Forecast vs. Historical Data")
