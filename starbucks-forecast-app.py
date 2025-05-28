@@ -8,8 +8,7 @@ import openai
 
 # Configuration
 FRED_API_KEY = '18b5149ec21c04e0b38290b1de865d0b'
-OPENAI_API_KEY = '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'  # REPLACE THIS before deployment or use st.secrets
-openai.api_key = OPENAI_API_KEY
+
 fred = Fred(api_key=FRED_API_KEY)
 
 st.title("Starbucks Revenue Forecasting App")
@@ -59,7 +58,6 @@ ax.set_ylabel("Revenue (in millions)")
 ax.legend()
 st.pyplot(fig)
 
-# --- AI Summary (with fail-safe) ---
 # --- Static AI Summary ---
 st.subheader("AI-Generated Summary (Simulated)")
 
@@ -73,8 +71,5 @@ summary_text = (
 
 st.write(summary_text)
 
-
-ai_summary = generate_summary(actuals, forecasted)
-st.write(ai_summary)
 
 
