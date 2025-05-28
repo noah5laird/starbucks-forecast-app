@@ -4,12 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from fredapi import Fred
-import openai
-
-# Configuration
-FRED_API_KEY = '18b5149ec21c04e0b38290b1de865d0b'
-
-fred = Fred(api_key=FRED_API_KEY)
 
 st.title("Starbucks Revenue Forecasting App")
 
@@ -70,6 +64,3 @@ summary_text = (
 )
 
 st.write(summary_text)
-
-
-
