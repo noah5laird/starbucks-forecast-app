@@ -24,7 +24,7 @@ data = load_data()
 # --- User Input Section ---
 st.sidebar.header("User Input")
 user_cpi = st.sidebar.slider("Expected CPI Growth (%)", 1.0, 5.0, 3.0)
-user_expenses = st.sidebar.number_input("Projected Quarterly Expenses (in millions)", value=5000.0)
+user_expenses = st.sidebar.number_input("Projected Quarterly Expenses (in millions)", value=6000)
 
 # --- Create Exogenous Variable Dataframe ---
 def prepare_exog(df):
