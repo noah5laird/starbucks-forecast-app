@@ -52,15 +52,19 @@ ax.set_ylabel("Revenue (in millions)")
 ax.legend()
 st.pyplot(fig)
 
-# --- Static AI Summary ---
+# --- Static AI Summary (Formatted Safely) ---
 st.subheader("AI-Generated Summary (Simulated)")
 
+latest = actuals.iloc[-1]
+forecasted_val = forecasted.iloc[-1]
+
 summary_text = (
-    "Based on the current forecast, Starbucks’ quarterly revenue is projected to grow steadily from its most recent "
-    f"level of ${actuals.iloc[-1]:,.0f} to approximately ${forecasted.iloc[-1]:,.0f} in future quarters. This trend aligns "
-    "with moderate CPI growth and controlled expense levels, suggesting sustainable business performance. The analysis "
-    "indicates low risk of revenue overstatement under current macroeconomic conditions. Auditors should continue to monitor "
-    "these assumptions as economic conditions evolve."
+    f"Based on the current forecast, Starbucks’ quarterly revenue is projected to grow steadily from its most recent "
+    f"level of ${latest:,.0f} to approximately ${forecasted_val:,.0f} in future quarters. This trend aligns with moderate "
+    "CPI growth and controlled expense levels, suggesting sustainable business performance. The analysis indicates low risk "
+    "of revenue overstatement under current macroeconomic conditions. Auditors should continue to monitor these assumptions "
+    "as economic conditions evolve."
 )
 
 st.write(summary_text)
+
