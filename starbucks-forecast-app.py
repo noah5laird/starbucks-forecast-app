@@ -24,7 +24,7 @@ def run_forecast(data, future_cpi, future_expenses):
     df["date"] = pd.date_range(start="2018-03-31", periods=len(df), freq="QE")
     df = df.set_index("date")
 
-    exog = df[["CPI", "expenses"]]
+    exog = df[["CPI"]]
     model = SARIMAX(df["revenue"], exog=exog, order=(1, 1, 1)).fit(disp=False)
 
     future_exog = pd.DataFrame({
@@ -60,7 +60,7 @@ forecasted_val = forecasted.iloc[-1]
 
 summary_text = (
     f"Based on the current forecast, Starbucks’ quarterly revenue is projected to grow steadily from its most recent "
-    f"level of ${latest:.1f}\n   to an estimated   ${forecasted_val:.1f} in future quarters. This trend aligns with moderate "
+    f"level of ${latest:.1f} to an estimated ${forecasted_val:.1f} in future quarters. This trend aligns with moderate "
     f"CPI growth and controlled expense levels, suggesting sustainable business performance. The analysis indicates low risk "
     f"of revenue overstatement under current macroeconomic conditions. Auditors should continue to monitor these assumptions "
     f"as economic conditions evolve."
