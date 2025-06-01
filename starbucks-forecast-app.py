@@ -15,7 +15,8 @@ data = load_data()
 
 # --- User Input ---
 st.sidebar.header("User Input")
-user_cpi = st.sidebar.slider("Expected CPI Growth (%)", 1.0, 5.0, 3.0)
+user_cpi = st.sidebar.slider("Expected CPI Growth (%)", -3.0, 3.0, 0.0)
+
 user_expenses = st.sidebar.number_input("Projected Quarterly Expenses for the first quarter of 2024 (in millions)", value=6500.0)
 
 # --- Forecast Function ---
