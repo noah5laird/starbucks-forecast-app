@@ -24,7 +24,7 @@ actual_data.set_index("date", inplace=True)
 st.sidebar.header("User Input")
 user_cpi = st.sidebar.slider("Expected CPI Growth (%)", -3.0, 3.0, 0.0)
 
-user_expenses = st.sidebar.number_input("Projected  Expenses for the First Quarter of 2024 (in millions)", value=6200.0)
+user_marketing = st.sidebar.number_input("Projected  Marketing Spend for the First Quarter of 2024 (in millions)", value=400.0)
 
 def run_forecast(data, future_cpi, future_expenses):
     df = data.copy()
@@ -33,7 +33,7 @@ def run_forecast(data, future_cpi, future_expenses):
 
     df = df.set_index("date")
 
-    exog = df[["CPI", "expenses"]]
+    exog = df[["CPI", "marketing_spend"]]
     model = SARIMAX(df["revenue"], exog=exog, order=(1, 1, 1)).fit(disp=False)
 
     # Project 4 quarters (2024)
