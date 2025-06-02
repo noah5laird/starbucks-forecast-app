@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from fredapi import Fred
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
 st.title("Starbucks Revenue Forecasting")
 
 @st.cache_data
