@@ -19,32 +19,26 @@ user_cpi = st.sidebar.slider("Expected CPI Growth (%)", -3.0, 3.0, 0.0)
 
 user_expenses = st.sidebar.number_input("Projected  Expenses for the First Quarter of 2024 (in millions)", value=6200.0)
 
-# --- Forecast Function ---
 def run_forecast(data, future_cpi, future_expenses):
     df = data.copy()
     df["date"] = pd.date_range(start="2018-03-31", periods=len(df), freq="QE")
+    df = df[df["date"] <= "2023-12-31"]  # Limit data to 2023
     df = df.set_index("date")
 
     exog = df[["CPI", "expenses"]]
-
     model = SARIMAX(df["revenue"], exog=exog, order=(1, 1, 1)).fit(disp=False)
 
-    # Forecast 8 quarters: 4 for 2023 + 4 for future
-    total_steps = 8
-
-    # Generate expense trajectory: assume expenses grow for 8 future quarters
+    # Project 4 quarters (2024)
     expense_growth_rate = 0.02
-    future_expenses_series = [future_expenses * ((1 + expense_growth_rate) ** i) for i in range(total_steps)]
+    future_expenses_series = [future_expenses * ((1 + expense_growth_rate) ** i) for i in range(4)]
 
-    # Use same CPI assumption throughout
     future_exog = pd.DataFrame({
-        "CPI": [future_cpi] * total_steps,
+        "CPI": [future_cpi] * 4,
         "expenses": future_expenses_series
     })
 
-    forecast = model.get_forecast(steps=total_steps, exog=future_exog)
+    forecast = model.get_forecast(steps=4, exog=future_exog)
     forecast_values = forecast.predicted_mean
-
     return df["revenue"], forecast_values
 
 # --- Run the Forecast ---
