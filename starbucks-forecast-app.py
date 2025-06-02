@@ -22,7 +22,7 @@ user_expenses = st.sidebar.number_input("Projected  Expenses for the First Quart
 def run_forecast(data, future_cpi, future_expenses):
     df = data.copy()
     df["date"] = pd.date_range(start="2018-03-31", periods=len(df), freq="QE")
-    df = df[df["date"] <= "2023-12-31"]  # Limit data to 2023
+    df = df[df["date"] <= "2022-12-31"]  # Limit data to 2023
     df = df.set_index("date")
 
     exog = df[["CPI", "expenses"]]
@@ -37,7 +37,7 @@ def run_forecast(data, future_cpi, future_expenses):
         "expenses": future_expenses_series
     })
 
-    forecast = model.get_forecast(steps=4, exog=future_exog)
+    forecast = model.get_forecast(steps=8, exog=future_exog)
     forecast_values = forecast.predicted_mean
     return df["revenue"], forecast_values
 
