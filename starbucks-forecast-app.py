@@ -22,15 +22,17 @@ user_expenses = st.sidebar.number_input("Projected  Expenses for the First Quart
 def run_forecast(data, future_cpi, future_expenses):
     df = data.copy()
     df["date"] = pd.date_range(start="2018-03-31", periods=len(df), freq="QE")
-    df = df[df["date"] <= "2022-12-31"]
 
-    df = df.set_index("date")
+    # Keep all data for actuals plotting
+    full_df = df.set_index("date")
 
-    exog = df[["CPI", "expenses"]]
-    model = SARIMAX(df["revenue"], exog=exog, order=(1, 1, 1)).fit(disp=False)
+    # Only train model on data through 2022
+    train_df = full_df[full_df.index <= "2022-12-31"]
 
-    # Project 4 quarters (2024)
-    # Project 8 quarters (2023–2024)
+    exog = train_df[["CPI", "expenses"]]
+    model = SARIMAX(train_df["revenue"], exog=exog, order=(1, 1, 1)).fit(disp=False)
+
+    # Forecast 8 quarters (2023–2024)
     expense_growth_rate = 0.02
     future_expenses_series = [future_expenses * ((1 + expense_growth_rate) ** i) for i in range(8)]
 
@@ -39,10 +41,11 @@ def run_forecast(data, future_cpi, future_expenses):
         "expenses": future_expenses_series
     })
 
-
     forecast = model.get_forecast(steps=8, exog=future_exog)
     forecast_values = forecast.predicted_mean
-    return df["revenue"], forecast_values
+
+    return full_df["revenue"], forecast_values
+
 
 # --- Run the Forecast ---
 actuals, forecasted = run_forecast(data, user_cpi, user_expenses)
