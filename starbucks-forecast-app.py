@@ -24,7 +24,7 @@ actual_data.set_index("date", inplace=True)
 st.sidebar.header("User Input")
 user_cpi = st.sidebar.slider("Expected CPI Growth (%)", -3.0, 3.0, 0.0)
 
-user_marketing = st.sidebar.number_input("Projected  Marketing Spend for the First Quarter of 2024 (in millions)", value=394209)
+user_marketing = st.sidebar.number_input("Projected  Marketing Spend for the First Quarter of 2024 (in millions)", value=300000)
 
 def run_forecast(data, future_cpi, future_expenses):
     df = data.copy()
