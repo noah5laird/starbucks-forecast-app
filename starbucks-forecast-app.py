@@ -61,7 +61,6 @@ fig, ax = plt.subplots()
 last_date = actuals.index[-1]
 forecast_index = pd.date_range(start=actuals.index[-1] + pd.offsets.QuarterEnd(1), periods=8, freq="QE")
 
-ax.plot(actuals.index, actuals.values, label="Actual Revenue (Training)", color='black')
 ax.plot(actual_data.index, actual_data["revenue"], label="Actual Revenue (Full)", color='blue', linestyle=":")
 ax.plot(forecast_index, forecasted, label="Forecasted Revenue (2023–2024)", linestyle="--", color='green')
 
