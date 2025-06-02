@@ -26,19 +26,25 @@ def run_forecast(data, future_cpi, future_expenses):
     df = df.set_index("date")
 
     exog = df[["CPI", "expenses"]]
+
     model = SARIMAX(df["revenue"], exog=exog, order=(1, 1, 1)).fit(disp=False)
 
-    # Generate quarterly expense growth (e.g., +2% per quarter)
-    expense_growth_rate = 0.02  # 2% per quarter
-    future_expenses_series = [future_expenses * ((1 + expense_growth_rate) ** i) for i in range(4)]
+    # Forecast 8 quarters: 4 for 2023 + 4 for future
+    total_steps = 8
 
+    # Generate expense trajectory: assume expenses grow for 8 future quarters
+    expense_growth_rate = 0.02
+    future_expenses_series = [future_expenses * ((1 + expense_growth_rate) ** i) for i in range(total_steps)]
+
+    # Use same CPI assumption throughout
     future_exog = pd.DataFrame({
-        "CPI": [future_cpi] * 4,
+        "CPI": [future_cpi] * total_steps,
         "expenses": future_expenses_series
     })
 
-    forecast = model.get_forecast(steps=4, exog=future_exog)
+    forecast = model.get_forecast(steps=total_steps, exog=future_exog)
     forecast_values = forecast.predicted_mean
+
     return df["revenue"], forecast_values
 
 # --- Run the Forecast ---
@@ -47,15 +53,17 @@ actuals, forecasted = run_forecast(data, user_cpi, user_expenses)
 # --- Plot ---
 st.subheader("Revenue Forecast vs. Historical Data")
 fig, ax = plt.subplots()
+
 last_date = actuals.index[-1]
-forecast_index = pd.date_range(start=last_date + pd.offsets.QuarterEnd(1), periods=4, freq="QE")
+forecast_index = pd.date_range(start=last_date + pd.offsets.QuarterEnd(1), periods=8, freq="QE")
 
 ax.plot(actuals.index, actuals.values, label="Actual Revenue")
-ax.plot(forecast_index, forecasted, label="Forecasted Revenue", linestyle="--")
+ax.plot(forecast_index, forecasted, label="Forecasted Revenue (2023–2024)", linestyle="--")
 ax.set_xlabel("Year")
 ax.set_ylabel("Revenue (in millions)")
 ax.legend()
 st.pyplot(fig)
+
 
 # --- Static AI Summary (Formatted Safely) ---
 st.subheader("AI-Generated Summary")
