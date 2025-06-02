@@ -85,11 +85,12 @@ forecasted_val = forecasted.iloc[-1]
 
 
 summary_text = (
-    "Based on the current forecast, Starbucks’ quarterly revenue is expected to stabilize around $8,000 million "
-    "following a sharp, anomalous spike in 2023. This surge appears tied to unusually high stores spend that year, "
-    "which may not reflect sustainable operating conditions. The forecast suggests a return to normalized growth, "
-    "supported by modest CPI expectations and controlled expense projections. Auditors should monitor for further volatility "
-    "tied to discretionary spend and ensure future revenue recognition remains aligned with core business fundamentals."
+    "Based on the ARIMAX model, which incorporates CPI and store count as predictors, Starbucks’ revenue forecast shows "
+    "a decline despite projected growth in store count through 2024. This inverse trend may indicate a potential revenue "
+    "overstatement in the most recent periods—particularly given the anomalous spike observed in 2023. While CPI expectations "
+    "are modest, the model's reaction to increased store counts suggests diminishing returns or inflated revenue recognition. "
+    "Auditors should scrutinize the assumptions underlying revenue growth and assess whether reported figures reflect sustainable "
+    "business activity."
 )
 
 
