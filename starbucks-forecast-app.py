@@ -52,7 +52,7 @@ def run_forecast(data, future_cpi, future_expenses):
     return df["revenue"], forecast_values
 
 # --- Run the Forecast ---
-actuals, forecasted = run_forecast(data, user_cpi, user_expenses)
+actuals, forecasted = run_forecast(data, user_cpi, user_marketing)
 
 # --- Plot ---
 st.subheader("Revenue Forecast vs. Historical Data")
