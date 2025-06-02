@@ -6,3 +6,4 @@ statsmodels
 openai
 fredapi
 vaderSentiment
+requests
