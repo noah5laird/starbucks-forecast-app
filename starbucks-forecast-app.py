@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from fredapi import Fred
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+import requests
 
 st.title("Starbucks Revenue Forecasting")
 
@@ -21,11 +22,35 @@ data = load_data()
 actual_data["date"] = pd.date_range(start="2018-03-31", periods=len(actual_data), freq="QE")
 actual_data.set_index("date", inplace=True)
 
+# --- Live CPI from FRED ---
+def get_latest_cpi():
+    url = "https://api.stlouisfed.org/fred/series/observations"
+    params = {
+        "series_id": "CPALTT01USQ657N",
+        "api_key": "464890becc3d3b822c960913019c586d",
+        "file_type": "json",
+        "observation_start": "2023-01-01"
+    }
+    r = requests.get(url, params=params)
+    if r.status_code == 200:
+        observations = r.json()["observations"]
+        latest = float(observations[-1]['value'])
+        return latest
+    return None
+
 # --- User Input ---
 st.sidebar.header("User Input")
-user_cpi = st.sidebar.slider("Expected CPI Growth (%)", -3.0, 3.0, 0.0)
 
-user_store_pct_change = st.sidebar.slider("Projected Store Count Change (%) from Q4 2022", -10.0, 10.0, 0.0)
+# Fetch latest CPI
+live_cpi = get_latest_cpi()
+if live_cpi:
+    st.sidebar.markdown(f"📊 **Live CPI from FRED:** {live_cpi:.2f}%")
+else:
+    st.sidebar.warning("⚠️ Could not fetch live CPI data.")
+
+# Input sliders
+user_cpi = st.sidebar.slider("Expected CPI Growth (%)", -3.0, 3.0, 0.0)
+user_stores_pct = st.sidebar.slider("Projected Store Count Change (%) from Q4 2022", -10.0, 10.0, 0.0)
 
 
 def run_forecast(data, future_cpi, pct_change):
