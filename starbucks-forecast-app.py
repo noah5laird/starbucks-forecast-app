@@ -42,7 +42,11 @@ def run_forecast(data, future_cpi, future_expenses):
 
     forecast = model.get_forecast(steps=8, exog=future_exog)
     forecast_values = forecast.predicted_mean
-    return df["revenue"], forecast_values
+    # Create datetime index starting from Q1 2023
+    start_date = pd.date_range(start="2023-03-31", periods=8, freq="QE")
+    forecast_series = pd.Series(forecast_values, index=start_date)
+    return df["revenue"], forecast_series
+
 
 
 def get_all_actuals(data):
@@ -69,7 +73,9 @@ ax.plot(actuals.index, actuals.values, label="Actual Revenue", color='black')
 
 
 # Plot forecast (2023–2024)
+
 ax.plot(forecasted.index, forecasted.values, label="Forecasted Revenue (2023–2024)", linestyle="--", color='green')
+
 
 
 ax.set_xlabel("Year")
