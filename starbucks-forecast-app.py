@@ -90,6 +90,8 @@ st.write(summary_text)
 
 
 
+
+
 # --- Benchmark Comparison: Starbucks vs. Coffee Industry ---
 st.subheader("Benchmark Comparison: Revenue Growth")
 
@@ -105,9 +107,9 @@ col1.metric("Starbucks Forecasted Growth", f"{sb_growth:.2%}")
 col2.metric("Coffee Industry Avg (Qtrly)", f"{peer_quarterly_growth:.2%}")
 
 # Add interpretation
-if sb_growth > peer_quarterly_growth + 0.04:
+if sb_growth > peer_quarterly_growth + 0.05:
     st.warning("⚠️ Starbucks' forecasted growth significantly exceeds industry norms. Consider reviewing the assumptions.")
-elif sb_growth < peer_quarterly_growth - 0.04:
+elif sb_growth < peer_quarterly_growth - 0.05:
     st.info("ℹ️ Forecasted growth is well below industry average. Assumptions may be conservative.")
 else:
     st.success("✅ Forecasted growth is within a reasonable range of industry expectations.")
