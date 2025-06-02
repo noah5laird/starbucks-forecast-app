@@ -73,7 +73,7 @@ def run_forecast(data, future_cpi, pct_change):
         "store_count": future_stores_series
     })
 
-    forecast = model.get_forecast(steps=8, exog=future_exog, alpha = 0.1)
+    forecast = model.get_forecast(steps=8, exog=future_exog)
     forecast_values = forecast.predicted_mean
     conf_int = forecast.conf_int()
     return df["revenue"], forecast_values, conf_int
