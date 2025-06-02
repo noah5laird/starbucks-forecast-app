@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from statsmodels.tsa.statespace.sarimax import SARIMAX
-from fredapi import Fred
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import requests
 
@@ -17,8 +16,8 @@ def load_actual_data():
     return pd.read_csv("merged_with_cpi_with_datesACTUAL.csv")
 
 actual_data = load_actual_data()
-
 data = load_data()
+
 actual_data["date"] = pd.date_range(start="2018-03-31", periods=len(actual_data), freq="QE")
 actual_data.set_index("date", inplace=True)
 
@@ -52,7 +51,6 @@ else:
 user_cpi = st.sidebar.slider("Expected CPI Growth (%)", -3.0, 3.0, 0.0)
 user_store_pct_change = st.sidebar.slider("Projected Store Count Change (%) from Q4 2022", -10.0, 10.0, 0.0)
 
-
 def run_forecast(data, future_cpi, pct_change):
     df = data.copy()
     df["date"] = pd.date_range(start="2018-03-31", periods=len(df), freq="QE")
@@ -62,11 +60,9 @@ def run_forecast(data, future_cpi, pct_change):
     exog = df[["CPI", "store_count"]]
     model = SARIMAX(df["revenue"], exog=exog, order=(1, 1, 1)).fit(disp=False)
 
-    # Get most recent actual store count
     last_store_count = actual_data["store_count"].iloc[-1]
     projected_q1_2023_store_count = last_store_count * (1 + pct_change / 100)
 
-    # Project 8 quarters of store growth
     store_growth_rate = 0.02
     future_stores_series = [
         projected_q1_2023_store_count * ((1 + store_growth_rate) ** i) for i in range(8)
@@ -79,35 +75,39 @@ def run_forecast(data, future_cpi, pct_change):
 
     forecast = model.get_forecast(steps=8, exog=future_exog)
     forecast_values = forecast.predicted_mean
-    return df["revenue"], forecast_values
+    conf_int = forecast.conf_int()
+    return df["revenue"], forecast_values, conf_int
 
 # --- Run the Forecast ---
-actuals, forecasted = run_forecast(data, user_cpi, user_store_pct_change)
-
+actuals, forecasted, conf_int = run_forecast(data, user_cpi, user_store_pct_change)
 
 # --- Plot ---
 st.subheader("Revenue Forecast vs. Historical Data")
 fig, ax = plt.subplots()
 
-last_date = actuals.index[-1]
 forecast_index = pd.date_range(start=actuals.index[-1] + pd.offsets.QuarterEnd(1), periods=8, freq="QE")
 
 ax.plot(actual_data.index, actual_data["revenue"], label="Actual Revenue", color='black')
 ax.plot(forecast_index, forecasted, label="Forecasted Revenue (2023–2024)", linestyle="--", color='green')
+
+# Add confidence interval shading
+ax.fill_between(forecast_index,
+                conf_int.iloc[:, 0],
+                conf_int.iloc[:, 1],
+                color='gray',
+                alpha=0.3,
+                label='95% Confidence Interval')
 
 ax.set_xlabel("Year")
 ax.set_ylabel("Revenue (in millions)")
 ax.legend()
 st.pyplot(fig)
 
-
-
-# --- Static AI Summary (Formatted Safely) ---
+# --- Static AI Summary ---
 st.subheader("AI-Generated Summary")
 
 latest = actuals.iloc[-1]
 forecasted_val = forecasted.iloc[-1]
-
 
 summary_text = (
     "Based on the ARIMAX model, which incorporates CPI and store count as predictors, Starbucks’ revenue forecast shows "
@@ -118,20 +118,12 @@ summary_text = (
     "business activity."
 )
 
-
-
 st.write(summary_text)
 
-
-
-
-# --- Benchmark Comparison: Starbucks vs. Coffee Industry ---
+# --- Benchmark Comparison ---
 st.subheader("Benchmark Comparison: Revenue Growth")
 
-# Starbucks growth based on forecast
 sb_growth = (forecasted_val - latest) / latest
-
-# Convert annual CAGR (5.4%) to approximate quarterly growth rate
 peer_annual_cagr = 0.054
 peer_quarterly_growth = (1 + peer_annual_cagr) ** (1 / 4) - 1  # ≈ 1.32%
 
@@ -139,14 +131,12 @@ col1, col2 = st.columns(2)
 col1.metric("Starbucks Forecasted Growth", f"{sb_growth:.2%}")
 col2.metric("Coffee Industry Avg (Qtrly)", f"{peer_quarterly_growth:.2%}")
 
-# Add interpretation
 if sb_growth > peer_quarterly_growth + 0.04:
     st.warning("⚠️ Starbucks' forecasted growth significantly exceeds industry norms. Consider reviewing the assumptions.")
 elif sb_growth < peer_quarterly_growth - 0.04:
     st.info("ℹ️ Forecasted growth is well below industry average. Assumptions may be conservative.")
 else:
     st.success("✅ Forecasted growth is within a reasonable range of industry expectations.")
-
 
 # --- Sentiment Analysis ---
 st.markdown("### 📰 Earnings Sentiment Check")
