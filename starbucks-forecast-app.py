@@ -86,10 +86,6 @@ actuals, forecasted = run_forecast(data, user_cpi, user_store_pct_change)
 
 
 # --- Plot ---
-# --- Run the Forecast ---
-actuals, forecasted = run_forecast(data, user_cpi, user_stores)
-
-# --- Plot ---
 st.subheader("Revenue Forecast vs. Historical Data")
 fig, ax = plt.subplots()
 
