@@ -77,13 +77,16 @@ st.subheader("AI-Generated Summary")
 latest = actuals.iloc[-1]
 forecasted_val = forecasted.iloc[-1]
 
+
 summary_text = (
-    f"Based on the current forecast, Starbucks’ quarterly revenue is projected to grow steadily from its most recent "
-    f"level of ${latest:.1f} to an estimated ${forecasted_val:.1f} in future quarters. This trend aligns with moderate "
-    f"CPI growth and controlled marketing levels, suggesting sustainable business performance. The analysis indicates low risk "
-    f"of revenue overstatement under current macroeconomic conditions. Auditors should continue to monitor these assumptions "
-    f"as economic conditions evolve."
+    "Based on the current forecast, Starbucks’ quarterly revenue is expected to stabilize around $8,000 million "
+    "following a sharp, anomalous spike in 2023. This surge appears tied to unusually high marketing spend that year, "
+    "which may not reflect sustainable operating conditions. The forecast suggests a return to normalized growth, "
+    "supported by modest CPI expectations and controlled expense projections. Auditors should monitor for further volatility "
+    "tied to discretionary spend and ensure future revenue recognition remains aligned with core business fundamentals."
 )
+
+
 
 st.write(summary_text)
 
