@@ -36,10 +36,9 @@ def run_forecast(data, future_cpi, future_expenses):
     exog = df[["CPI", "marketing_spend"]]
     model = SARIMAX(df["revenue"], exog=exog, order=(1, 1, 1)).fit(disp=False)
 
-    # Project 4 quarters (2024)
     # Project 8 quarters (2023–2024)
-    expense_growth_rate = 0.02
-    future_marketing_series = [future_expenses * ((1 + expense_growth_rate) ** i) for i in range(8)]
+    marketing_growth_rate = 0.02
+    future_marketing_series = [future_marketing * ((1 + marketing_growth_rate) ** i) for i in range(8)]
 
     future_exog = pd.DataFrame({
         "CPI": [future_cpi] * 8,
