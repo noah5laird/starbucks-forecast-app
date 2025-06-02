@@ -52,7 +52,7 @@ forecast_index = pd.date_range(start=last_date + pd.offsets.QuarterEnd(1), perio
 
 ax.plot(actuals.index, actuals.values, label="Actual Revenue")
 ax.plot(forecast_index, forecasted, label="Forecasted Revenue", linestyle="--")
-ax.set_xlabel("Quarter")
+ax.set_xlabel("Year")
 ax.set_ylabel("Revenue (in millions)")
 ax.legend()
 st.pyplot(fig)
