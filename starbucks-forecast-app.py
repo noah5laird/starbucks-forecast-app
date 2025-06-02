@@ -26,7 +26,7 @@ user_cpi = st.sidebar.slider("Expected CPI Growth (%)", -3.0, 3.0, 0.0)
 
 user_marketing = st.sidebar.number_input("Projected  Marketing Spend for the First Quarter of 2023 (in millions)", value=425.0)
 
-def run_forecast(data, future_cpi, future_expenses):
+def run_forecast(data, future_cpi, future_marketing):
     df = data.copy()
     df["date"] = pd.date_range(start="2018-03-31", periods=len(df), freq="QE")
     df = df[df["date"] <= "2022-12-31"]
@@ -38,12 +38,12 @@ def run_forecast(data, future_cpi, future_expenses):
 
     # Project 4 quarters (2024)
     # Project 8 quarters (2023–2024)
-    expense_growth_rate = 0.02
-    future_expenses_series = [future_expenses * ((1 + expense_growth_rate) ** i) for i in range(8)]
+    marketing_growth_rate = 0.02
+    future_marketing_series = [future_marketing * ((1 + marketing_growth_rate) ** i) for i in range(8)]
 
     future_exog = pd.DataFrame({
         "CPI": [future_cpi] * 8,
-        "expenses": future_expenses_series
+        "Marketing": future_marketing_series
     })
 
 
@@ -80,7 +80,7 @@ forecasted_val = forecasted.iloc[-1]
 summary_text = (
     f"Based on the current forecast, Starbucks’ quarterly revenue is projected to grow steadily from its most recent "
     f"level of ${latest:.1f} to an estimated ${forecasted_val:.1f} in future quarters. This trend aligns with moderate "
-    f"CPI growth and controlled expense levels, suggesting sustainable business performance. The analysis indicates low risk "
+    f"CPI growth and controlled marketing levels, suggesting sustainable business performance. The analysis indicates low risk "
     f"of revenue overstatement under current macroeconomic conditions. Auditors should continue to monitor these assumptions "
     f"as economic conditions evolve."
 )
