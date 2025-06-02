@@ -17,7 +17,7 @@ data = load_data()
 st.sidebar.header("User Input")
 user_cpi = st.sidebar.slider("Expected CPI Growth (%)", -3.0, 3.0, 0.0)
 
-user_expenses = st.sidebar.number_input("Projected  Expenses for the First Quarter of 2024 (in millions)", value=6300.0)
+user_expenses = st.sidebar.number_input("Projected  Expenses for the First Quarter of 2024 (in millions)", value=6200.0)
 
 # --- Forecast Function ---
 def run_forecast(data, future_cpi, future_expenses):
