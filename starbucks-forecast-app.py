@@ -86,29 +86,21 @@ actuals, forecasted = run_forecast(data, user_cpi, user_store_pct_change)
 
 
 # --- Plot ---
-# --- Plot with Confidence Interval ---
-st.subheader("Revenue Forecast vs. Historical Data with Confidence Interval")
+# --- Run the Forecast ---
+actuals, forecasted = run_forecast(data, user_cpi, user_stores)
+
+# --- Plot ---
+st.subheader("Revenue Forecast vs. Historical Data")
 fig, ax = plt.subplots()
 
-# Forecast index aligned with forecasted output
-forecast = model.get_forecast(steps=8, exog=future_exog)
-forecasted_mean = forecast.predicted_mean
-confidence_int = forecast.conf_int()
-
+last_date = actuals.index[-1]
 forecast_index = pd.date_range(start=actuals.index[-1] + pd.offsets.QuarterEnd(1), periods=8, freq="QE")
 
-# Plot actuals
 ax.plot(actual_data.index, actual_data["revenue"], label="Actual Revenue", color='black')
-
-# Plot forecast
-ax.plot(forecast_index, forecasted_mean, label="Forecasted Revenue (2023–2024)", linestyle="--", color='green')
-
-# Plot confidence interval
-ax.fill_between(forecast_index, confidence_int.iloc[:, 0], confidence_int.iloc[:, 1], color='gray', alpha=0.3, label='Confidence Interval')
+ax.plot(forecast_index, forecasted, label="Forecasted Revenue (2023–2024)", linestyle="--", color='green')
 
 ax.set_xlabel("Year")
 ax.set_ylabel("Revenue (in millions)")
-ax.set_title("Revenue Forecast vs. Historical Data")
 ax.legend()
 st.pyplot(fig)
 
