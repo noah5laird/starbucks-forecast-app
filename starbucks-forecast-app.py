@@ -25,26 +25,26 @@ actual_data.set_index("date", inplace=True)
 st.sidebar.header("User Input")
 user_cpi = st.sidebar.slider("Expected CPI Growth (%)", -3.0, 3.0, 0.0)
 
-user_marketing = st.sidebar.number_input("Projected  Marketing Spend for the First Quarter of 2023 (in millions)", value=450.0)
+user_stores = st.sidebar.number_input("Projected  Stores Count for the First Quarter of 2023", value=31000)
 
-def run_forecast(data, future_cpi, future_marketing):
+def run_forecast(data, future_cpi, future_stores):
     df = data.copy()
     df["date"] = pd.date_range(start="2018-03-31", periods=len(df), freq="QE")
     df = df[df["date"] <= "2022-12-31"]
 
     df = df.set_index("date")
 
-    exog = df[["CPI", "marketing_spend"]]
+    exog = df[["CPI", "store_count"]]
     model = SARIMAX(df["revenue"], exog=exog, order=(1, 1, 1)).fit(disp=False)
 
     # Project 4 quarters (2024)
     # Project 8 quarters (2023–2024)
-    marketing_growth_rate = 0.02
-    future_marketing_series = [future_marketing * ((1 + marketing_growth_rate) ** i) for i in range(8)]
+    stores_growth_rate = 0.02
+    future_stores_series = [future_stores * ((1 + stores_growth_rate) ** i) for i in range(8)]
 
     future_exog = pd.DataFrame({
         "CPI": [future_cpi] * 8,
-        "Marketing": future_marketing_series
+        "stores": future_stores_series
     })
 
 
@@ -53,7 +53,7 @@ def run_forecast(data, future_cpi, future_marketing):
     return df["revenue"], forecast_values
 
 # --- Run the Forecast ---
-actuals, forecasted = run_forecast(data, user_cpi, user_marketing)
+actuals, forecasted = run_forecast(data, user_cpi, user_stores)
 
 # --- Plot ---
 st.subheader("Revenue Forecast vs. Historical Data")
@@ -81,7 +81,7 @@ forecasted_val = forecasted.iloc[-1]
 
 summary_text = (
     "Based on the current forecast, Starbucks’ quarterly revenue is expected to stabilize around $8,000 million "
-    "following a sharp, anomalous spike in 2023. This surge appears tied to unusually high marketing spend that year, "
+    "following a sharp, anomalous spike in 2023. This surge appears tied to unusually high stores spend that year, "
     "which may not reflect sustainable operating conditions. The forecast suggests a return to normalized growth, "
     "supported by modest CPI expectations and controlled expense projections. Auditors should monitor for further volatility "
     "tied to discretionary spend and ensure future revenue recognition remains aligned with core business fundamentals."
