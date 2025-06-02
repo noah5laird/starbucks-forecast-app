@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from fredapi import Fred
-
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 st.title("Starbucks Revenue Forecasting")
 
 @st.cache_data
@@ -114,3 +114,25 @@ elif sb_growth < peer_quarterly_growth - 0.04:
     st.info("ℹ️ Forecasted growth is well below industry average. Assumptions may be conservative.")
 else:
     st.success("✅ Forecasted growth is within a reasonable range of industry expectations.")
+
+
+# --- Sentiment Analysis ---
+st.markdown("### 📰 Earnings Sentiment Check")
+example_headlines = [
+    "Starbucks beats earnings expectations but sees slower growth in China",
+    "Starbucks reports record revenue amid inflation concerns",
+    "Starbucks shares fall despite strong Q3 performance"
+]
+analyzer = SentimentIntensityAnalyzer()
+sentiments = [analyzer.polarity_scores(h)['compound'] for h in example_headlines]
+avg_sentiment = sum(sentiments) / len(sentiments)
+
+for h, s in zip(example_headlines, sentiments):
+    st.write(f"- {h} (Sentiment: {s:.2f})")
+
+if avg_sentiment < -0.1:
+    st.error("⚠️ Negative earnings sentiment detected. Potential revenue risk.")
+elif avg_sentiment < 0.1:
+    st.warning("⚠️ Neutral to slightly negative sentiment. Monitor closely.")
+else:
+    st.success("✅ Sentiment is generally positive.")
