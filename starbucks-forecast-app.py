@@ -10,7 +10,7 @@ st.title("Starbucks Revenue Forecasting")
 @st.cache_data
 def load_data():
     return pd.read_csv("merged_with_cpi_with_dates.csv")
-@st.cache_data
+
 def load_actual_data():
     return pd.read_csv("merged_with_cpi_with_dateACTUAL.csv")
 
