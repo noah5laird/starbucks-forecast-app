@@ -49,7 +49,7 @@ st.subheader("Revenue Forecast vs. Historical Data")
 fig, ax = plt.subplots()
 
 last_date = actuals.index[-1]
-forecast_index = pd.date_range(start=actuals.index[-1] + pd.offsets.QuarterEnd(1), periods=4, freq="QE")
+forecast_index = pd.date_range(start=actuals.index[-4] + pd.offsets.QuarterEnd(1), periods=8, freq="QE")
 
 
 ax.plot(actuals.index, actuals.values, label="Actual Revenue")
