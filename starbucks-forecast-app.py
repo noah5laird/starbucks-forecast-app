@@ -24,7 +24,7 @@ actual_data.set_index("date", inplace=True)
 st.sidebar.header("User Input")
 user_cpi = st.sidebar.slider("Expected CPI Growth (%)", -3.0, 3.0, 0.0)
 
-user_marketing = st.sidebar.number_input("Projected  Marketing Spend for the First Quarter of 2024 (in millions)", value=300000)
+user_expenses = st.sidebar.number_input("Projected  Expenses for the First Quarter of 2024 (in millions)", value=6200.0)
 
 def run_forecast(data, future_cpi, future_expenses):
     df = data.copy()
@@ -33,16 +33,17 @@ def run_forecast(data, future_cpi, future_expenses):
 
     df = df.set_index("date")
 
-    exog = df[["CPI", "marketing_spend"]]
+    exog = df[["CPI", "expenses"]]
     model = SARIMAX(df["revenue"], exog=exog, order=(1, 1, 1)).fit(disp=False)
 
+    # Project 4 quarters (2024)
     # Project 8 quarters (2023–2024)
-    marketing_growth_rate = 0.02
-    future_marketing_series = [future_marketing * ((1 + marketing_growth_rate) ** i) for i in range(8)]
+    expense_growth_rate = 0.02
+    future_expenses_series = [future_expenses * ((1 + expense_growth_rate) ** i) for i in range(8)]
 
     future_exog = pd.DataFrame({
         "CPI": [future_cpi] * 8,
-        "Marketing Spend": future_marketing_series
+        "expenses": future_expenses_series
     })
 
 
@@ -51,7 +52,7 @@ def run_forecast(data, future_cpi, future_expenses):
     return df["revenue"], forecast_values
 
 # --- Run the Forecast ---
-actuals, forecasted = run_forecast(data, user_cpi, user_marketing)
+actuals, forecasted = run_forecast(data, user_cpi, user_expenses)
 
 # --- Plot ---
 st.subheader("Revenue Forecast vs. Historical Data")
@@ -60,8 +61,8 @@ fig, ax = plt.subplots()
 last_date = actuals.index[-1]
 forecast_index = pd.date_range(start=actuals.index[-1] + pd.offsets.QuarterEnd(1), periods=8, freq="QE")
 
-ax.plot(actual_data.index, actual_data["revenue"], label="Actual Revenue", color='black')
-ax.plot(forecast_index, forecasted, label="Forecasted Revenue (2023–2024)", linestyle="--", color='red')
+ax.plot(actual_data.index, actual_data["revenue"], label="Actual Revenue (Full)", color='blue', linestyle=":")
+ax.plot(forecast_index, forecasted, label="Forecasted Revenue (2023–2024)", linestyle="--", color='green')
 
 ax.set_xlabel("Year")
 ax.set_ylabel("Revenue (in millions)")
@@ -89,8 +90,6 @@ st.write(summary_text)
 
 
 
-
-
 # --- Benchmark Comparison: Starbucks vs. Coffee Industry ---
 st.subheader("Benchmark Comparison: Revenue Growth")
 
@@ -106,9 +105,9 @@ col1.metric("Starbucks Forecasted Growth", f"{sb_growth:.2%}")
 col2.metric("Coffee Industry Avg (Qtrly)", f"{peer_quarterly_growth:.2%}")
 
 # Add interpretation
-if sb_growth > peer_quarterly_growth + 0.05:
+if sb_growth > peer_quarterly_growth + 0.04:
     st.warning("⚠️ Starbucks' forecasted growth significantly exceeds industry norms. Consider reviewing the assumptions.")
-elif sb_growth < peer_quarterly_growth - 0.05:
+elif sb_growth < peer_quarterly_growth - 0.04:
     st.info("ℹ️ Forecasted growth is well below industry average. Assumptions may be conservative.")
 else:
     st.success("✅ Forecasted growth is within a reasonable range of industry expectations.")
