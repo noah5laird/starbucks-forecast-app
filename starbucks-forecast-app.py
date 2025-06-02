@@ -129,7 +129,7 @@ example_headlines = [
     "Starbucks beats earnings expectations but sees slower growth in China",
     "Starbucks reports record revenue amid inflation concerns",
     "Starbucks shares fall despite strong Q3 performance",
-    "Starbucks' China Sales Soar, but Revenue and Same-Store Sales Miss Forecasts
+    "Starbucks' China Sales Soar, but Revenue and Same-Store Sales Miss Forecasts"
 ]
 analyzer = SentimentIntensityAnalyzer()
 sentiments = [analyzer.polarity_scores(h)['compound'] for h in example_headlines]
