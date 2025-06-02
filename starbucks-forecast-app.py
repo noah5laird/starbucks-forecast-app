@@ -67,8 +67,10 @@ forecast_index = pd.date_range(start=actuals.index[-1] + pd.offsets.QuarterEnd(1
 # Plot full actuals (through 2023)
 ax.plot(actuals.index, actuals.values, label="Actual Revenue", color='black')
 
-# Plot forecast (2024–2025)
-ax.plot(forecast_index, forecasted, label="Forecasted Revenue (2023–2024)", linestyle="--", color='green')
+
+# Plot forecast (2023–2024)
+ax.plot(forecasted.index, forecasted.values, label="Forecasted Revenue (2023–2024)", linestyle="--", color='green')
+
 
 ax.set_xlabel("Year")
 ax.set_ylabel("Revenue (in millions)")
