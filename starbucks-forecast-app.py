@@ -25,35 +25,40 @@ actual_data.set_index("date", inplace=True)
 st.sidebar.header("User Input")
 user_cpi = st.sidebar.slider("Expected CPI Growth (%)", -3.0, 3.0, 0.0)
 
-user_stores = st.sidebar.number_input("Projected  Stores Count for the First Quarter of 2023", value=31000)
+user_store_pct_change = st.sidebar.slider("Projected Store Count Change (%) from Q4 2022", -10.0, 10.0, 0.0)
 
-def run_forecast(data, future_cpi, future_stores):
+
+def run_forecast(data, future_cpi, pct_change):
     df = data.copy()
     df["date"] = pd.date_range(start="2018-03-31", periods=len(df), freq="QE")
     df = df[df["date"] <= "2022-12-31"]
-
     df = df.set_index("date")
 
     exog = df[["CPI", "store_count"]]
     model = SARIMAX(df["revenue"], exog=exog, order=(1, 1, 1)).fit(disp=False)
 
-    # Project 4 quarters (2024)
-    # Project 8 quarters (2023–2024)
-    stores_growth_rate = 0.02
-    future_stores_series = [future_stores * ((1 + stores_growth_rate) ** i) for i in range(8)]
+    # Get most recent actual store count
+    last_store_count = actual_data["store_count"].iloc[-1]
+    projected_q1_2023_store_count = last_store_count * (1 + pct_change / 100)
+
+    # Project 8 quarters of store growth
+    store_growth_rate = 0.02
+    future_stores_series = [
+        projected_q1_2023_store_count * ((1 + store_growth_rate) ** i) for i in range(8)
+    ]
 
     future_exog = pd.DataFrame({
         "CPI": [future_cpi] * 8,
-        "stores": future_stores_series
+        "store_count": future_stores_series
     })
-
 
     forecast = model.get_forecast(steps=8, exog=future_exog)
     forecast_values = forecast.predicted_mean
     return df["revenue"], forecast_values
 
 # --- Run the Forecast ---
-actuals, forecasted = run_forecast(data, user_cpi, user_stores)
+actuals, forecasted = run_forecast(data, user_cpi, user_store_pct_change)
+
 
 # --- Plot ---
 st.subheader("Revenue Forecast vs. Historical Data")
@@ -62,7 +67,7 @@ fig, ax = plt.subplots()
 last_date = actuals.index[-1]
 forecast_index = pd.date_range(start=actuals.index[-1] + pd.offsets.QuarterEnd(1), periods=8, freq="QE")
 
-ax.plot(actual_data.index, actual_data["revenue"], label="Actual Revenue (Full)", color='black')
+ax.plot(actual_data.index, actual_data["revenue"], label="Actual Revenue", color='black')
 ax.plot(forecast_index, forecasted, label="Forecasted Revenue (2023–2024)", linestyle="--", color='green')
 
 ax.set_xlabel("Year")
