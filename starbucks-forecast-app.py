@@ -21,7 +21,8 @@ user_expenses = st.sidebar.number_input("Projected  Expenses for the First Quart
 
 def run_forecast(data, future_cpi, future_expenses):
     df = data.copy()
-    df["date"] = pd.date_range(start="2018-03-31", periods=len(df), freq="QE", end = "2022-12-31")
+    df["date"] = pd.date_range(start="2018-03-31", periods=len(df), freq="QE")
+    df = df[df["date"] <= "2022-12-31"]
 
     df = df.set_index("date")
 
