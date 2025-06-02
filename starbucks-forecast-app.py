@@ -10,8 +10,15 @@ st.title("Starbucks Revenue Forecasting")
 @st.cache_data
 def load_data():
     return pd.read_csv("merged_with_cpi_with_dates.csv")
+@st.cache_data
+def load_actual_data():
+    return pd.read_csv("merged_with_cpi_with_dateACTUAL.csv")
+
+actual_data = load_actual_data()
 
 data = load_data()
+actual_data["date"] = pd.date_range(start="2018-03-31", periods=len(actual_data), freq="QE")
+actual_data.set_index("date", inplace=True)
 
 # --- User Input ---
 st.sidebar.header("User Input")
@@ -54,13 +61,15 @@ fig, ax = plt.subplots()
 last_date = actuals.index[-1]
 forecast_index = pd.date_range(start=actuals.index[-1] + pd.offsets.QuarterEnd(1), periods=8, freq="QE")
 
+ax.plot(actuals.index, actuals.values, label="Actual Revenue (Training)", color='black')
+ax.plot(actual_data.index, actual_data["revenue"], label="Actual Revenue (Full)", color='blue', linestyle=":")
+ax.plot(forecast_index, forecasted, label="Forecasted Revenue (2023–2024)", linestyle="--", color='green')
 
-ax.plot(actuals.index, actuals.values, label="Actual Revenue")
-ax.plot(forecast_index, forecasted, label="Forecasted Revenue (2023–2024)", linestyle="--")
 ax.set_xlabel("Year")
 ax.set_ylabel("Revenue (in millions)")
 ax.legend()
 st.pyplot(fig)
+
 
 
 # --- Static AI Summary (Formatted Safely) ---
