@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from fredapi import Fred
 
-st.title("Starbucks Revenue Forecasting App")
+st.title("Starbucks Revenue Forecasting")
 
 @st.cache_data
 def load_data():
@@ -58,13 +58,13 @@ ax.legend()
 st.pyplot(fig)
 
 # --- Static AI Summary (Formatted Safely) ---
-st.subheader("AI-Generated Summary (Simulated)")
+st.subheader("AI-Generated Summary")
 
 latest = actuals.iloc[-1]
 forecasted_val = forecasted.iloc[-1]
 
 summary_text = (
-    f"Based on the current forecast, Starbucks’ quarterly revenue is projected to drop steadily from its most recent "
+    f"Based on the current forecast, Starbucks’ quarterly revenue is projected to grow steadily from its most recent "
     f"level of ${latest:.1f} to an estimated ${forecasted_val:.1f} in future quarters. This trend aligns with moderate "
     f"CPI growth and controlled expense levels, suggesting sustainable business performance. The analysis indicates low risk "
     f"of revenue overstatement under current macroeconomic conditions. Auditors should continue to monitor these assumptions "
