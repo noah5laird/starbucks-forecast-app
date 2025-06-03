@@ -130,6 +130,26 @@ summary_text = (
 )
 
 st.write(summary_text)
+
+
+# --- Benchmark Comparison ---
+st.subheader("Benchmark Comparison: Revenue Growth")
+
+sb_growth = (forecasted_val - latest) / latest
+peer_annual_cagr = 0.054
+peer_quarterly_growth = (1 + peer_annual_cagr) ** (1 / 4) - 1  # ≈ 1.32%
+
+col1, col2 = st.columns(2)
+col1.metric("Starbucks Forecasted Growth", f"{sb_growth:.2%}")
+col2.metric("Coffee Industry Avg (Qtrly)", f"{peer_quarterly_growth:.2%}")
+
+if sb_growth > peer_quarterly_growth + 0.04:
+    st.warning("⚠️ Starbucks' forecasted growth significantly exceeds industry norms. Consider reviewing the assumptions.")
+elif sb_growth < peer_quarterly_growth - 0.04:
+    st.info("ℹ️ Forecasted growth is well below industry average. Assumptions may be conservative.")
+else:
+    st.success("✅ Forecasted growth is within a reasonable range of industry expectations.")
+
 # --- Expenses Insight with Simple Regression ---
 
 df1 = data.copy()
@@ -161,23 +181,6 @@ st.plotly_chart(fig2, use_container_width=True)
 st.info("This regression chart shows how well Starbucks' expenses align with revenue. If actual revenue significantly deviates from predicted revenue based on expenses, it may indicate a misstatement or unusual revenue recognition. Strong alignment supports revenue and expense correlation.")
 
 
-# --- Benchmark Comparison ---
-st.subheader("Benchmark Comparison: Revenue Growth")
-
-sb_growth = (forecasted_val - latest) / latest
-peer_annual_cagr = 0.054
-peer_quarterly_growth = (1 + peer_annual_cagr) ** (1 / 4) - 1  # ≈ 1.32%
-
-col1, col2 = st.columns(2)
-col1.metric("Starbucks Forecasted Growth", f"{sb_growth:.2%}")
-col2.metric("Coffee Industry Avg (Qtrly)", f"{peer_quarterly_growth:.2%}")
-
-if sb_growth > peer_quarterly_growth + 0.04:
-    st.warning("⚠️ Starbucks' forecasted growth significantly exceeds industry norms. Consider reviewing the assumptions.")
-elif sb_growth < peer_quarterly_growth - 0.04:
-    st.info("ℹ️ Forecasted growth is well below industry average. Assumptions may be conservative.")
-else:
-    st.success("✅ Forecasted growth is within a reasonable range of industry expectations.")
 
 # --- Sentiment Analysis ---
 st.markdown("### 📰 Earnings Sentiment Check")
