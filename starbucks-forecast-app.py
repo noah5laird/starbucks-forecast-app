@@ -126,10 +126,17 @@ summary_text = (
     "Auditors should scrutinize the assumptions underlying revenue growth and assess whether reported figures reflect sustainable "
     "business activity."
 )
-df1 = data.copy()
+
 st.write(summary_text)
 # --- Expenses Insight with Simple Regression ---
+
+df1 = data.copy()
+df1["date"] = pd.date_range(start="2018-03-31", periods=len(df1), freq="QE")
+df1.set_index("date", inplace=True)
+
+# --- Expenses Insight with Simple Regression ---
 st.markdown("### 💸 Expenses vs Revenue (Regression Model)")
+
 X = sm.add_constant(df1['expenses'])
 y = df1['revenue']
 model_exp = sm.OLS(y, X).fit()
@@ -142,11 +149,12 @@ fig2.add_trace(go.Scatter(x=df1.index, y=predicted_revenue, name="Predicted Reve
 
 fig2.update_layout(
     title="Revenue vs Expenses",
-    xaxis=dict(title="Date"),
+    xaxis=dict(title="Date", tickformat="%Y"),  # <-- Formats ticks as Year
     yaxis=dict(title="Value"),
     legend=dict(x=0.01, y=0.99)
 )
 st.plotly_chart(fig2, use_container_width=True)
+
 
 st.info("This regression chart shows how well Starbucks' expenses align with revenue. If actual revenue significantly deviates from predicted revenue based on expenses, it may indicate a misstatement or unusual revenue recognition. Strong alignment supports revenue and expense correlation.")
 
