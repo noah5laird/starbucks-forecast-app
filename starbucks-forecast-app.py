@@ -149,7 +149,7 @@ else:
 st.markdown("### 📰 Earnings Sentiment Check")
 example_headlines = [
     "Starbucks beats earnings expectations but sees slower growth in China",
-    "Starbucks reports record revenue amid inflation concerns",
+    "Further Downside Brewing for Starbucks (SBUX)?",
     "Starbucks shares fall despite strong Q3 performance",
     "Starbucks' China Sales Soar, but Revenue and Same-marketing Sales Miss Forecasts"
 ]
