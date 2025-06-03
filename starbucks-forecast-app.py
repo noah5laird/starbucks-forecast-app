@@ -7,6 +7,15 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import requests
 
 st.title("Starbucks Revenue Forecasting")
+st.markdown(
+    """
+    ### 🎯 Thesis Statement  
+    There is evidence to suggest that Starbucks' reported revenue may be **overstated**, particularly in fiscal year 2023.  
+    Forecasts derived from ARIMAX modeling — which incorporate store growth and inflation — indicate that revenue trends  
+    do not align with operational inputs or macroeconomic indicators, raising audit concerns over the validity of recent figures.
+    """,
+    unsafe_allow_html=True
+)
 
 @st.cache_data
 def load_data():
