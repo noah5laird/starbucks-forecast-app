@@ -12,11 +12,10 @@ st.title("Starbucks Revenue Forecasting")
 st.markdown(
     """
     ### 🎯 Thesis Statement  
-    There is a growing belief that Starbucks' reported revenue may be **overstated**, particularly in fiscal year 2023. This application explores that concern using ARIMAX forecasting — which incorporates marketing spend and inflation — to identify discrepancies between revenue and key economic drivers. It also compares Starbucks’ projected growth against industry benchmarks and examines the relationship between expenses and revenue. Together, these analyses provide evidence that supports broader skepticism and raise potential red flags for auditors and analysts. Finally, earnings sentiment appears slightly negative, further conflicting with the sharp rise in reported revenue and raising potential red flags for auditors and analysts.
+    Revenue appears overstated as growth outpaces marketing investment and broader economic trends, raising credibility concerns.
     """,
     unsafe_allow_html=True
 )
-
 
 @st.cache_data
 def load_data():
