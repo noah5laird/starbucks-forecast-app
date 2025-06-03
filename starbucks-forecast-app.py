@@ -111,7 +111,7 @@ ax.set_xlabel("Year")
 ax.set_ylabel("Revenue (in millions)")
 ax.legend()
 st.pyplot(fig)
-
+st.caption("🔍 If actual revenue falls **outside the 95% confidence interval**, it suggests a potential misstatement or an unexpected shift in business performance that the model did not anticipate. This warrants further investigation.")
 # --- Static AI Summary ---
 st.subheader("AI-Generated Summary")
 
