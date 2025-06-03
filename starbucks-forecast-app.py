@@ -170,7 +170,7 @@ fig2.add_trace(go.Scatter(x=df1.index, y=df1['revenue'], name="Actual Revenue", 
 fig2.add_trace(go.Scatter(x=df1.index, y=predicted_revenue, name="Predicted Revenue", mode="lines"))
 
 fig2.update_layout(
-    title="Revenue vs expenses",
+
     xaxis=dict(title="Date", tickformat="%Y"),  # <-- Formats ticks as Year
     yaxis=dict(title="$ (millions)"),
     legend=dict(x=0.01, y=0.99)
