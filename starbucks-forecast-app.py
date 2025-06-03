@@ -49,7 +49,7 @@ else:
 
 # Input sliders
 user_cpi = st.sidebar.slider("Expected CPI Growth (%)", -3.0, 3.0, 0.0)
-user_marketing_pct_change = st.sidebar.slider("Projected marketing Count Change (%) from Q4 2022", -10.0, 10.0, 0.0)
+user_marketing_pct_change = st.sidebar.slider("Projected Marketing Spend Change (%) from Q4 2022", -10.0, 10.0, 0.0)
 
 def run_forecast(data, future_cpi, pct_change):
     df = data.copy()
