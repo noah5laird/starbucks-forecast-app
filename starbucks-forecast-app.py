@@ -148,7 +148,7 @@ fig2.update_layout(
 )
 st.plotly_chart(fig2, use_container_width=True)
 
-st.info("This regression chart shows how well Starbucks' expenses align with revenue. If actual revenue significantly deviates from predicted revenue based on expenses, it may indicate a misstatement or unusual revenue recognition. Strong alignment supports revenue validity.")
+st.info("This regression chart shows how well Starbucks' expenses align with revenue. If actual revenue significantly deviates from predicted revenue based on expenses, it may indicate a misstatement or unusual revenue recognition. Strong alignment supports revenue and expense correlation.")
 
 
 # --- Benchmark Comparison ---
