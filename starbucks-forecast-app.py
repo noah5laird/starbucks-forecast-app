@@ -6,6 +6,7 @@ from statsmodels.tsa.statespace.sarimax import SARIMAX
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import requests
 import statsmodels.api as sm
+import plotly.graph_objects as go
 
 st.title("Starbucks Revenue Forecasting")
 st.markdown(
@@ -134,7 +135,7 @@ y = df1['revenue']
 model_exp = sm.OLS(y, X).fit()
 predicted_revenue = model_exp.predict(X)
 
-fig2 = plt.Figure()
+fig2 = go.Figure()
 fig2.add_trace(go.Scatter(x=df1.index, y=df1['expenses'], name="Expenses", mode="lines+markers"))
 fig2.add_trace(go.Scatter(x=df1.index, y=df1['revenue'], name="Actual Revenue", mode="lines+markers"))
 fig2.add_trace(go.Scatter(x=df1.index, y=predicted_revenue, name="Predicted Revenue", mode="lines"))
