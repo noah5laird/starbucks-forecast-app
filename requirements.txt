@@ -7,5 +7,5 @@ openai
 fredapi
 vaderSentiment
 requests
-statsmodels.api
+statsmodels
 plotly
