@@ -8,3 +8,4 @@ fredapi
 vaderSentiment
 requests
 statsmodels.api
+plotly.graph_objects
