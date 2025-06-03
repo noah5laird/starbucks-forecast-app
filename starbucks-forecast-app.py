@@ -125,7 +125,7 @@ summary_text = (
     "Auditors should scrutinize the assumptions underlying revenue growth and assess whether reported figures reflect sustainable "
     "business activity."
 )
-
+df = data.copy()
 st.write(summary_text)
 # --- Expenses Insight with Simple Regression ---
 st.markdown("### 💸 Expenses vs Revenue (Regression Model)")
