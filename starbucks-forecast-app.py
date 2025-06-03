@@ -104,7 +104,7 @@ ax.fill_between(forecast_index,
                 conf_int.iloc[:, 0],
                 conf_int.iloc[:, 1],
                 color='gray',
-                alpha=0.3,
+                alpha=0.05,
                 label='95% Confidence Interval')
 
 ax.set_xlabel("Year")
