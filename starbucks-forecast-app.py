@@ -49,7 +49,7 @@ else:
 
 # Input sliders
 user_cpi = st.sidebar.slider("Expected CPI Growth (%)", -3.0, 3.0, 0.0)
-user_store_pct_change = st.sidebar.slider("Projected Store Count Change (%) from Q4 2022", -10.0, 10.0, 0.0)
+user_marketing_pct_change = st.sidebar.slider("Projected marketing Count Change (%) from Q4 2022", -10.0, 10.0, 0.0)
 
 def run_forecast(data, future_cpi, pct_change):
     df = data.copy()
@@ -57,20 +57,20 @@ def run_forecast(data, future_cpi, pct_change):
     df = df[df["date"] <= "2022-12-31"]
     df = df.set_index("date")
 
-    exog = df[["CPI", "store_count"]]
+    exog = df[["CPI", "marketing_spend"]]
     model = SARIMAX(df["revenue"], exog=exog, order=(1, 1, 1)).fit(disp=False)
 
-    last_store_count = actual_data["store_count"].iloc[-1]
-    projected_q1_2023_store_count = last_store_count * (1 + pct_change / 100)
+    last_marketing_spend = actual_data["marketing_spend"].iloc[-1]
+    projected_q1_2023_marketing_spend = last_marketing_spend * (1 + pct_change / 100)
 
-    store_growth_rate = 0.02
-    future_stores_series = [
-        projected_q1_2023_store_count * ((1 + store_growth_rate) ** i) for i in range(8)
+    marketing_growth_rate = 0.02
+    future_marketings_series = [
+        projected_q1_2023_marketing_spend * ((1 + marketing_growth_rate) ** i) for i in range(8)
     ]
 
     future_exog = pd.DataFrame({
         "CPI": [future_cpi] * 8,
-        "store_count": future_stores_series
+        "marketing_spend": future_marketings_series
     })
 
     forecast = model.get_forecast(steps=8, exog=future_exog)
@@ -79,7 +79,7 @@ def run_forecast(data, future_cpi, pct_change):
     return df["revenue"], forecast_values, conf_int
 
 # --- Run the Forecast ---
-actuals, forecasted, conf_int = run_forecast(data, user_cpi, user_store_pct_change)
+actuals, forecasted, conf_int = run_forecast(data, user_cpi, user_marketing_pct_change)
 
 # --- Plot ---
 st.subheader("Revenue Forecast vs. Historical Data")
@@ -110,10 +110,10 @@ latest = actuals.iloc[-1]
 forecasted_val = forecasted.iloc[-1]
 
 summary_text = (
-    "Based on the ARIMAX model, which incorporates CPI and store count as predictors, Starbucks’ revenue forecast shows "
-    "a decline despite projected growth in store count through 2024. This inverse trend may indicate a potential revenue "
+    "Based on the ARIMAX model, which incorporates CPI and marketing count as predictors, Starbucks’ revenue forecast shows "
+    "a decline despite projected growth in marketing spend through 2023 and 2024. This inverse trend may indicate a potential revenue "
     "overstatement in the most recent periods—particularly given the anomalous spike observed in 2023. While CPI expectations "
-    "are modest, the model's reaction to increased store counts suggests diminishing returns or inflated revenue recognition. "
+    "are modest, the model's reaction to increased marketing counts suggests diminishing returns or inflated revenue recognition. "
     "Auditors should scrutinize the assumptions underlying revenue growth and assess whether reported figures reflect sustainable "
     "business activity."
 )
@@ -144,7 +144,7 @@ example_headlines = [
     "Starbucks beats earnings expectations but sees slower growth in China",
     "Starbucks reports record revenue amid inflation concerns",
     "Starbucks shares fall despite strong Q3 performance",
-    "Starbucks' China Sales Soar, but Revenue and Same-Store Sales Miss Forecasts"
+    "Starbucks' China Sales Soar, but Revenue and Same-marketing Sales Miss Forecasts"
 ]
 analyzer = SentimentIntensityAnalyzer()
 sentiments = [analyzer.polarity_scores(h)['compound'] for h in example_headlines]
