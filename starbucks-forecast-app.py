@@ -104,7 +104,7 @@ ax.fill_between(forecast_index,
                 conf_int.iloc[:, 0],
                 conf_int.iloc[:, 1],
                 color='gray',
-                alpha=0.05,
+                alpha=0.3,
                 label='95% Confidence Interval')
 
 ax.set_xlabel("Year")
@@ -172,7 +172,7 @@ fig2.add_trace(go.Scatter(x=df1.index, y=predicted_revenue, name="Predicted Reve
 fig2.update_layout(
     title="Revenue vs expenses",
     xaxis=dict(title="Date", tickformat="%Y"),  # <-- Formats ticks as Year
-    yaxis=dict(title="Value"),
+    yaxis=dict(title="$ (millions)"),
     legend=dict(x=0.01, y=0.99)
 )
 st.plotly_chart(fig2, use_container_width=True)
