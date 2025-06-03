@@ -91,7 +91,7 @@ def run_forecast(data, future_cpi, pct_change):
 actuals, forecasted, conf_int = run_forecast(data, user_cpi, user_marketing_pct_change)
 
 # --- Plot ---
-st.subheader("Revenue Forecast vs. Historical Data")
+st.subheader("Revenue Forecast vs. Historical Data (ARIMAX)")
 fig, ax = plt.subplots()
 
 forecast_index = pd.date_range(start=actuals.index[-1] + pd.offsets.QuarterEnd(1), periods=8, freq="QE")
