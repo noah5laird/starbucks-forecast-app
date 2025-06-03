@@ -111,7 +111,15 @@ ax.set_xlabel("Year")
 ax.set_ylabel("Revenue (in millions)")
 ax.legend()
 st.pyplot(fig)
-st.caption("🔍 If actual revenue falls **outside the 95% confidence interval**, it suggests a potential misstatement or an unexpected shift in business performance that the model did not anticipate. This warrants further investigation.")
+st.markdown(
+    """
+    <div style='color: red; font-size: 20px; font-weight: bold;'>
+        🚩 <u>Red Flag:</u> If actual revenue falls <strong>outside the 95% confidence interval</strong>, it may indicate a material misstatement or significant unexpected business shift. This should prompt further audit investigation.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 # --- Static AI Summary ---
 st.subheader("AI-Generated Summary")
 
