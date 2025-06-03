@@ -110,7 +110,7 @@ latest = actuals.iloc[-1]
 forecasted_val = forecasted.iloc[-1]
 
 summary_text = (
-    "Based on the ARIMAX model, which incorporates CPI and marketing count as predictors, Starbucks’ revenue forecast shows "
+    "Based on the ARIMAX model, which incorporates CPI and marketing spend as predictors, Starbucks’ revenue forecast shows "
     "a decline despite projected growth in marketing spend through 2023 and 2024. This inverse trend may indicate a potential revenue "
     "overstatement in the most recent periods—particularly given the anomalous spike observed in 2023. While CPI expectations "
     "are modest, the model's reaction to increased marketing counts suggests diminishing returns or inflated revenue recognition. "
