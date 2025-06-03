@@ -125,19 +125,19 @@ summary_text = (
     "Auditors should scrutinize the assumptions underlying revenue growth and assess whether reported figures reflect sustainable "
     "business activity."
 )
-df = data.copy()
+df1 = data.copy()
 st.write(summary_text)
 # --- Expenses Insight with Simple Regression ---
 st.markdown("### 💸 Expenses vs Revenue (Regression Model)")
-X = sm.add_constant(df['expenses'])
-y = df['revenue']
+X = sm.add_constant(df1['expenses'])
+y = df1['revenue']
 model_exp = sm.OLS(y, X).fit()
 predicted_revenue = model_exp.predict(X)
 
 fig2 = go.Figure()
-fig2.add_trace(go.Scatter(x=df.index, y=df['expenses'], name="Expenses", mode="lines+markers"))
-fig2.add_trace(go.Scatter(x=df.index, y=df['revenue'], name="Actual Revenue", mode="lines+markers"))
-fig2.add_trace(go.Scatter(x=df.index, y=predicted_revenue, name="Predicted Revenue", mode="lines"))
+fig2.add_trace(go.Scatter(x=df1.index, y=df1['expenses'], name="Expenses", mode="lines+markers"))
+fig2.add_trace(go.Scatter(x=df1.index, y=df1['revenue'], name="Actual Revenue", mode="lines+markers"))
+fig2.add_trace(go.Scatter(x=df1.index, y=predicted_revenue, name="Predicted Revenue", mode="lines"))
 
 fig2.update_layout(
     title="Revenue vs Expenses",
@@ -148,6 +148,8 @@ fig2.update_layout(
 st.plotly_chart(fig2, use_container_width=True)
 
 st.info("This regression chart shows how well Starbucks' expenses align with revenue. If actual revenue significantly deviates from predicted revenue based on expenses, it may indicate a misstatement or unusual revenue recognition. Strong alignment supports revenue validity.")
+
+
 # --- Benchmark Comparison ---
 st.subheader("Benchmark Comparison: Revenue Growth")
 
