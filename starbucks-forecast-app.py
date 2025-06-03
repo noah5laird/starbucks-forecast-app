@@ -134,8 +134,8 @@ df1 = data.copy()
 df1["date"] = pd.date_range(start="2018-03-31", periods=len(df1), freq="QE")
 df1.set_index("date", inplace=True)
 
-# --- expenses Insight with Simple Regression ---
-st.markdown("### 💸 expenses vs Revenue (Regression Model)")
+# --- Expenses Insight with Simple Regression ---
+st.markdown("### 💸 Expenses vs Revenue (Regression Model)")
 
 X = sm.add_constant(df1['expenses'])
 y = df1['revenue']
