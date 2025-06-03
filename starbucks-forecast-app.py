@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import requests
+import statsmodels.api as sm
 
 st.title("Starbucks Revenue Forecasting")
 st.markdown(
